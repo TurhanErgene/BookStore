@@ -1,7 +1,6 @@
 from services.auth import handle_registration, handle_login
-from services.browse import browse_by_subject, search_by_author, search_by_title
-from services.book import get_all_subjects
-
+from services.book import get_all_subjects, search_by_author, search_by_title
+from services.browse import browse_by_subject
 
 def display_main_menu():
     while True:
@@ -15,7 +14,7 @@ def display_main_menu():
         choice = input("\nType in your option: ")
         if choice == "1":
             member = handle_login()
-            if not member:  ########### Remove not on production ###########
+            if member:  ########### Remove """not""" on production ###########
                 display_member_menu(member)
         elif choice == "2":
             handle_registration()
@@ -39,13 +38,7 @@ def display_member_menu(member):
 
         choice = input("\nType in your option: ")
         if choice == "1":
-            books = get_all_subjects()
-            if books:
-                print("\nAll book subjects: ")
-                for book in books:
-                    print(book)
-            else:
-                print("\nNo books available in the subject.")
+           browse_by_subject(member["userid"])
 
         elif choice == "2":
             while True:
