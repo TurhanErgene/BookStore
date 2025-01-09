@@ -1,6 +1,8 @@
 from services.auth import handle_registration, handle_login
 from services.book import get_all_subjects, search_by_author, search_by_title
 from services.browse import browse_by_subject
+from services.checkout import checkout, check_cart
+
 
 def display_main_menu():
     while True:
@@ -38,8 +40,9 @@ def display_member_menu(member):
 
         choice = input("\nType in your option: ")
         if choice == "1":
-           browse_by_subject(member["userid"])
+            browse_by_subject(member["userid"])
 
+####### Will be carried into a separate function ########
         elif choice == "2":
             while True:
                 print("1. Author Search")
@@ -64,16 +67,17 @@ def display_member_menu(member):
                         print("\nBooks available by the title: ")
                         for book in books:
                             print(book)
-                    else:
-                        print("\nNo books available by the title.")
-
                 elif choice == "3":
                     break
                 else:
                     print("\nInvalid option. Please try again.")
 
         elif choice == "3":
-            print("\nThis feature is not yet implemented.")
+            if not check_cart(member["userid"]):
+                print("\nYour cart is empty.")
+            else:
+                checkout(member["userid"])
+
         elif choice == "4":
             print("\nLogging out...")
             break
