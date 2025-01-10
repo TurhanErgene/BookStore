@@ -1,9 +1,10 @@
 from config.database import get_connection
 
+
 def get_all_subjects():
     conn = get_connection()
     cursor = conn.cursor()
-    query = "SELECT DISTINCT subject FROM Books ORDER BY subject" # DISTINCT: to eliminate duplicate values
+    query = "SELECT DISTINCT subject FROM Books ORDER BY subject"  # DISTINCT: to eliminate duplicate values
     cursor.execute(query)
     subjects = cursor.fetchall()
     cursor.close()
@@ -26,12 +27,15 @@ def get_books_by_subject(subject):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
     query = "SELECT * FROM Books WHERE subject = %s"
-    cursor.execute(query, (subject,)) # Note the comma after subject to create a tuple with one element 
-                                    # Without the trailing comma, (subject,) would just be subject (not a tuple) and cause an error.
+    cursor.execute(
+        query, (subject,)
+    )  # Note the comma after subject to create a tuple with one element
+    # Without the trailing comma, (subject,) would just be subject (not a tuple) and cause an error.
     books = cursor.fetchall()
     cursor.close()
     conn.close()
     return books
+
 
 def search_by_author(author):
     conn = get_connection()
@@ -43,11 +47,12 @@ def search_by_author(author):
     conn.close()
     return books
 
+
 def search_by_title(title):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
-    query = "SELECT * FROM Books WHERE title = %s"
-    cursor.execute(query, (title,))
+    query = "SELECT * FROM Books WHERE title = %s OR title LIKE %s"
+    cursor.execute(query, (f"%{title}%", f"%{title}%"))
     books = cursor.fetchall()
     cursor.close()
     conn.close()

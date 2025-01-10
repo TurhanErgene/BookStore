@@ -73,10 +73,16 @@ def display_member_menu(member):
                     print("\nInvalid option. Please try again.")
 
         elif choice == "3":
-            if not check_cart(member["userid"]):
-                print("\nYour cart is empty.")
-            else:
-                checkout(member["userid"])
+            confirm = input("Do you want to confirm and generate the invoice? (Y/N): ").strip().upper()
+            if confirm == "Y":
+                if not check_cart(member["userid"]):
+                    print("\nYour cart is empty.")
+                else:
+                    checkout(member["userid"])
+            elif confirm == "N":
+                print("\nOrder cancelled.")
+                return
+
 
         elif choice == "4":
             print("\nLogging out...")
