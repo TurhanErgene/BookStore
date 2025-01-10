@@ -1,4 +1,5 @@
 from config.database import get_connection
+from services.book import find_book_by_isbn
 
 
 def check_cart(member_id):
@@ -64,7 +65,7 @@ def checkout(member_id):
     cursor.execute(query, (member_id,))
     user_info = cursor.fetchone()
     shipAddress, shipCity, shipZip = user_info["address"], user_info["city"], user_info["zip"]
-    
+
     # Insert a new order into the orders table
     query = "INSERT INTO orders (userid, created, shipAddress, shipCity, shipZip) VALUES (%s, CURDATE(), %s, %s, %s)"
     cursor.execute(query, (member_id, shipAddress, shipCity, shipZip))
@@ -91,13 +92,3 @@ def checkout(member_id):
     conn.close()
     print("\nCheckout successful! Your cart has been cleared.")
 
-
-def find_book_by_isbn(isbn):
-    conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
-    query = "SELECT * FROM Books WHERE isbn = %s"
-    cursor.execute(query, (isbn,))
-    book = cursor.fetchone()
-    cursor.close()
-    conn.close()
-    return book

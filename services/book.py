@@ -69,3 +69,13 @@ def get_books_by_subject_paginated(subject, offset, limit):
     cursor.close()
     conn.close()
     return books
+
+def find_book_by_isbn(isbn):
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    query = "SELECT * FROM Books WHERE isbn = %s"
+    cursor.execute(query, (isbn,))
+    book = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    return book
