@@ -33,6 +33,7 @@ def browse_by_subject(member_id):
         if not page.isdigit() or int(page) < 1:
             print("\nInvalid page number. Please try again.")
             continue
+        
 
         # Calculate offset based on the page number
         offset = (int(page) - 1) * per_page  # Offset calculation
@@ -60,7 +61,12 @@ def browse_by_subject(member_id):
         action = input(
             "Enter ISBN to add to Cart, or press ENTER to choose another page: "
         )
-        if action.isdigit():
+        if not action:
+            continue
+        elif action.isdigit():
+            if len(action) != 13:
+                print("\nInvalid ISBN. Please try again.")
+                continue
             isbn = action
             quantity = int(input("Enter quantity: "))
             add_to_cart(member_id, isbn, quantity)
